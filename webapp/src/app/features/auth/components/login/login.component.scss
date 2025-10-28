@@ -1,0 +1,19 @@
+.login-page {
+  .login-page__form {
+    @apply mt-[var(--spacing-11)];
+  }
+
+  .login-page__forgot-password,
+  .login-page__no-account {
+    @apply 
+      block mt-[var(--spacing-2)];
+  }
+
+  .login-page__forgot-password {
+    @apply text-right;
+  }
+
+  .login-page__no-account {
+    @apply text-center;
+  }
+}

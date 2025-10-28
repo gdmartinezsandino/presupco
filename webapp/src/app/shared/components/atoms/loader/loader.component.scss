@@ -1,0 +1,32 @@
+.loader {
+  @apply
+    absolute top-0 left-0 z-[100]
+    flex flex-col items-center justify-center
+    w-full h-full
+    opacity-0 z-[-100];
+
+  &:not(.loader--is-visible) {
+    @apply pointer-events-none;
+  }
+
+  &.loader--is-visible {
+    @apply opacity-100 z-[100];
+  }
+
+  &.loader--dark-backdrop {
+    background: rgba(0, 0, 0, 0.7);
+
+    .loader__message {
+      @apply text-white;
+    }
+  }
+
+  mat-progress-spinner {
+    width: 60px;
+  }
+
+  &__message {
+    @apply mt-4 text-center text-black-900 text-sm max-w-[280px] px-4;
+    margin: 16px 0 0 0;
+  }
+}

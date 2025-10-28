@@ -1,0 +1,26 @@
+.toast {
+  @apply 
+    fixed bottom-6 left-1/2 z-[9999] 
+    flex items-center gap-4 
+    px-5 py-3 rounded-md 
+    text-[14px] text-white font-semibold whitespace-nowrap 
+    border border-solid opacity-100 
+    transition-opacity transition-transform duration-300 ease-out 
+    animate-fade-in animate-slide-in-up;
+
+  &.toast--warning {
+    @apply border-yellow-500 bg-yellow-100 text-yellow-500;
+  }
+
+  &.toast--success {
+    @apply border-green-600 bg-green-100 text-green-600;
+  }
+
+  &.toast--alert {
+    @apply border-red-600 bg-red-100 text-red-600;
+  }
+
+  &.toast--is-hiding {
+    @apply animate-fade-out animate-slide-out-down;
+  }
+}

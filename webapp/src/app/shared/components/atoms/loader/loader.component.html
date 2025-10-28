@@ -1,0 +1,14 @@
+<div class="loader" [ngClass]="loaderClasses()">
+  <mat-progress-spinner
+    class="example-margin"
+    [mode]="spinnerMode()"
+    [diameter]="spinnerSize()"
+  >
+  </mat-progress-spinner>
+
+  @if (message()) {
+    <p class="loader__message">{{ message() }}</p>
+  }
+</div>
+
+

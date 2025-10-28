@@ -1,0 +1,9 @@
+.p-co {
+  @apply 
+    grid grid-rows-max-auto-max;
+
+  .p-co__container {
+    @apply 
+      max-w-[100vw];
+  }
+}

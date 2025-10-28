@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  server:
+    name: Server: lint & test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install server dependencies
+        run: |
+          cd server
+          yarn install --frozen-lockfile || npm install
+      - name: Lint server
+        run: |
+          cd server
+          yarn lint
+      - name: Run server unit tests
+        run: |
+          cd server
+          yarn test --coverage
+
+  webapp:
+    name: Webapp: build & test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install webapp dependencies
+        run: |
+          cd webapp
+          yarn install --frozen-lockfile || npm install
+      - name: Lint webapp
+        run: |
+          cd webapp
+          yarn lint
+      - name: Build webapp
+        run: |
+          cd webapp
+          yarn build --configuration production
+      - name: Run webapp tests
+        run: |
+          cd webapp
+          yarn test --watch=false

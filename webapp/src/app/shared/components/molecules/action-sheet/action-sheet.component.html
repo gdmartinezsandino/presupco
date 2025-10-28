@@ -1,0 +1,32 @@
+<div 
+  class="action-sheet"
+  [ngClass]="actionSheetClasses()"
+  role="presentation"
+  aria-labelledby="action-sheet-title"
+>
+  <div 
+    class="action-sheet__backdrop" 
+    (click)="close()"
+    (keydown.enter)="close()"
+    (keydown.escape)="close()"
+    tabindex="0"
+    role="button"
+    aria-label="Close action sheet"
+  ></div>
+
+  <div class="action-sheet__container" #container role="dialog" aria-modal="true">
+    <button 
+      class="action-sheet__close" 
+      (click)="close()"
+      (keydown.enter)="close()"
+      (keydown.escape)="close()"
+      aria-label="Close action sheet"
+    ></button>
+
+    <h2 class="action-sheet__title" id="action-sheet-title">{{ title() }}</h2>
+
+    @if (content()) {
+      <ng-container *ngTemplateOutlet="content()"></ng-container>
+    }
+  </div>
+</div>

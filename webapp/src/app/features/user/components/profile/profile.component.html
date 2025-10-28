@@ -1,0 +1,38 @@
+<section class="profile-page">
+  <header class="profile-page__header">
+    <!-- <img src="assets/icon/account.svg" alt="profile"> -->
+    <div class="user-info">
+      <h1>{{ user()?.name }}</h1>
+    </div>
+  </header>
+
+  <main class="profile-page__content">
+    <ul class="list-options">
+      <li class="option">
+        <a 
+          href="javascript:void(0)"
+          (click)="goTo('profile/change-password')"
+          (keydown.enter)="goTo('profile/change-password')"
+          tabindex="0"
+          role="button"
+          class="profile-link"
+        >
+          Change password 
+          <!-- <img src="assets/icon/chevron-right.svg" alt="Navigate to change password"> -->
+        </a>
+      </li>
+    </ul>
+
+    <a 
+      href="javascript:void(0)"
+      class="logout-cta"
+      (click)="logout()"
+      (keydown.enter)="logout()"
+      tabindex="0"
+      role="button"
+      aria-label="Log out from account"
+    >
+      Log out
+    </a>
+  </main>
+</section>

@@ -1,0 +1,51 @@
+@layer components {
+  button {
+    &:disabled {
+      @apply opacity-25 pointer-events-none;
+    }
+  }
+
+  .button {
+    @apply 
+      py-[var(--spacing-4)] px-[var(--spacing-5)] 
+      bg-green-950 
+      border border-solid border-green-950 rounded-[44px]
+      text-center text-white font-semibold;
+
+    &:disabled {
+      @apply opacity-25 pointer-events-none;
+    }
+
+    &.button--secondary {
+      @apply 
+        bg-white 
+        text-green-950;
+    }
+
+    &.button--tertiary {
+      @apply 
+        py-[0] px-[var(--spacing-1)] 
+        bg-white border-none 
+        font-normal text-black-800;
+    }
+
+    &.button--icon {
+      @apply 
+        w-[44px] 
+        py-[var(--spacing-1)] px-[var(--spacing-2)] 
+        bg-white border-black-100 rounded-[5px];
+
+      img {
+        @apply m-auto;
+      }
+    }
+
+    &.button--with-icon {
+      @apply flex items-center gap-[var(--spacing-2)];
+    }
+
+    &.button--small {
+      @apply py-[var(--spacing-2)] px-[var(--spacing-3)];
+    }
+  }
+}

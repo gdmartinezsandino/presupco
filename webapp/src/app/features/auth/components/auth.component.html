@@ -1,0 +1,14 @@
+<section 
+  class="auth-page" 
+  [ngClass]="authClasses()"
+>
+  <div #wrapper class="auth-page__wrapper">
+    <header #header class="auth-page__header">
+      <img src="assets/images/logo.svg" alt="PresupCo">
+    </header>
+
+    <div class="auth-page__content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</section>

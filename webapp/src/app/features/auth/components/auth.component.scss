@@ -1,0 +1,53 @@
+.auth-page {
+  @apply 
+   flex items-center justify-center 
+   w-screen h-screen;
+
+.auth-page__wrapper {
+  @apply 
+    p-[var(--spacing-12)] pt-[calc(var(--spacing-10)_*_3)];
+
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+ .auth-page__header {
+    @apply 
+     absolute top-[50%] right-0 left-0 
+     translate-y-[-50%] 
+     py-[var(--spacing-8)] 
+     text-center;
+   transition: top 1s ease-in, transform 1s ease-in;
+
+   img {
+     @apply 
+      max-h-[40px]
+      scale-75 m-auto
+      transition-[transform] duration-1000 ease-in;
+   }
+ }
+
+ .auth-page__content {
+   @apply 
+     w-full 
+     opacity-0 
+     pointer-events-none
+     transition-opacity duration-100 ease-in delay-1000;
+ }
+
+ &.is-loaded {
+   .auth-page__header {
+     @apply 
+       translate-y-0;
+
+     img {
+       @apply scale-100;
+     }
+   }
+
+   .auth-page__content {
+     @apply 
+       opacity-100 
+       pointer-events-auto;
+   }
+ }
+}

@@ -1,0 +1,6 @@
+.footer {
+  @apply 
+    mt-[var(--spacing-8)]
+    border border-solid border-black-100
+    bg-black-50 text-white;
+}

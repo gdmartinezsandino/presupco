@@ -1,0 +1,63 @@
+{
+  "root": true,
+  "ignorePatterns": [
+    "projects/**/*"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "parserOptions": {
+        "project": ["tsconfig.app.json", "tsconfig.spec.json"],
+        "createDefaultProgram": true,
+        "ecmaVersion": 2020,
+        "sourceType": "module"
+      },
+      "extends": [
+        "eslint:recommended",
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:@typescript-eslint/recommended"
+      ],
+      "rules": {
+        "@typescript-eslint/explicit-function-return-type": ["warn", {
+          "allowExpressions": true,
+          "allowConciseArrowFunctionExpressionsStartingWithVoid": true
+        }],
+        "@typescript-eslint/no-explicit-any": ["warn", {
+          "ignoreRestArgs": true
+        }],
+        "@typescript-eslint/no-unused-vars": ["warn", {
+          "argsIgnorePattern": "^_",
+          "varsIgnorePattern": "^_"
+        }],
+        "@angular-eslint/directive-selector": ["error", {
+          "type": "attribute",
+          "prefix": "p-co",
+          "style": "camelCase"
+        }],
+        "@angular-eslint/component-selector": ["error", {
+          "type": "element",
+          "prefix": "p-co",
+          "style": "kebab-case"
+        }],
+        "@angular-eslint/no-empty-lifecycle-method": "error"
+      }
+    },
+    {
+      "files": ["*.html"],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended"
+      ],
+      "rules": {
+        "@angular-eslint/template/click-events-have-key-events": "warn",
+        "@angular-eslint/template/interactive-supports-focus": "warn",
+        "@angular-eslint/template/alt-text": "warn",
+        "@angular-eslint/template/label-has-associated-control": "warn",
+        "@angular-eslint/template/elements-content": "warn",
+        "@angular-eslint/template/no-positive-tabindex": "warn",
+        "@angular-eslint/template/table-has-caption": "off"
+      }
+    }
+  ]
+}

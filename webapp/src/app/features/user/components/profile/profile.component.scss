@@ -1,0 +1,41 @@
+.profile-page {
+  @apply 
+    grid grid-rows-max-auto h-[100%];
+
+  .profile-page__header {
+    @apply 
+      grid grid-cols-max-auto gap-[var(--spacing-4)] 
+      pb-[var(--spacing-5)];
+
+    .user-info {
+      h4 {
+        @apply text-red-600;
+      }
+    }
+  }
+
+  .profile-page__content {
+    @apply 
+      grid grid-rows-auto-max 
+      pt-[var(--spacing-8)] 
+      border-t border-solid border-black-100;
+
+    .list-options {
+      .option {
+        a {
+          @apply 
+            grid grid-cols-auto-max 
+            py-[var(--spacing-3)] px-[var(--spacing-8)] 
+            bg-white border border-solid border-black-100 rounded-[10px];
+        }
+      }
+    }
+
+    .logout-cta {
+      @apply 
+        py-[var(--spacing-3)] px-[var(--spacing-6)] 
+        border-t border-solid border-black-100 
+        text-red-600;
+    }
+  }
+}

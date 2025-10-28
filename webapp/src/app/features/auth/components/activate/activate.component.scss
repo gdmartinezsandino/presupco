@@ -1,0 +1,11 @@
+.activate-page {
+  .activate-page__header {
+    p {
+      @apply mt-[var(--spacing-1)];
+    }
+  }
+
+  .activate-page__form {
+    @apply mt-[var(--spacing-11)];
+  }
+}

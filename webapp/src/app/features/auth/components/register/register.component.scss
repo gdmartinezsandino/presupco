@@ -1,0 +1,11 @@
+.register-page {
+  .register-page__form {
+    @apply mt-[var(--spacing-11)];
+  }
+
+  .register-page__have-account {
+    @apply 
+      block mt-[var(--spacing-2)]
+      text-center;
+  }
+}

@@ -1,0 +1,122 @@
+.action-sheet {
+  @apply 
+    fixed inset-0 z-[100]
+    flex justify-center items-end
+    pointer-events-none;
+
+  .action-sheet__backdrop {
+    @apply 
+      absolute inset-0
+      opacity-0
+      bg-black-950/20
+      transition-opacity duration-300 ease-out;
+  }
+
+  .action-sheet__container {
+    @apply 
+      relative 
+      w-full max-h-[450px]
+      overflow-y-scroll 
+      pt-[var(--spacing-10)] pb-[var(--spacing-8)] px-[var(--spacing-8)] 
+      border-t border-solid border-black-100 rounded-t-[20px] 
+      bg-white
+      translate-y-full
+      transition-transform duration-700 ease-out;
+
+    box-shadow: 0 -2px 13px 0 rgba(0, 0, 0, 0.06);
+  
+    .action-sheet__close {
+      @apply 
+        content-[''] 
+        absolute top-[4px] left-[calc(50%_-_24px)] 
+        w-[48px] h-[3px]
+        bg-black-200;
+    }
+  
+    .action-sheet__title,
+    ::ng-deep .action-sheet__title {
+      @apply 
+        mb-[var(--spacing-5)]
+        pb-[var(--spacing-2)]
+        border-b border-solid border-black-100 
+        text-md font-semibold;
+
+      &.action-sheet__title--with-action {
+        @apply 
+          flex items-center justify-between gap-[var(--spacing-2)];
+      }
+    }
+
+    ::ng-deep {
+      .filter-section {
+        @apply mt-[var(--spacing-5)];
+      }
+
+      .add-filters {
+        .filter {
+          @apply 
+            grid items-start grid-cols-auto-max grid-rows-2 gap-[var(--spacing-2)];
+
+          .field {
+            @apply 
+              row-start-[2] col-start-[1]
+              mt-0;
+
+            &:first-child {
+              @apply 
+                row-start-[1]
+                mb-[var(--spacing-2)];
+            }
+          }
+
+          .filter__remove {
+            @apply 
+              row-start-[1] col-start-[2]
+              mt-[var(--spacing-1)];
+          }
+        }
+      }
+
+      ul {
+        li {
+          @apply 
+            py-[var(--spacing-2)];
+
+          &:nth-child(n+2) {
+            @apply 
+              mt-[var(--spacing-2)] 
+              border-t border-solid border-black-100;
+          }
+
+          &.is-disabled {
+            @apply opacity-50 pointer-events-none;
+          }
+        }
+      }
+
+      .form-actions {
+        @apply mt-[var(--spacing-5)];
+      }
+    }
+  }
+
+  &.action-sheet--is-visible {
+    @apply 
+      pointer-events-auto;
+
+    .action-sheet__backdrop {
+      @apply opacity-100;
+    }
+
+    .action-sheet__container {
+      @apply translate-y-0;
+    }
+  }
+
+  &.action-sheet--is-hiding {
+    .action-sheet__container {
+      @apply 
+        translate-y-[100%];
+    }
+  }
+}

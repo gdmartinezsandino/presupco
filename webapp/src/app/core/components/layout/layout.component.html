@@ -1,0 +1,27 @@
+<div 
+  class="p-co" 
+  [ngClass]="layoutClasses()"
+>
+  @if (showHeader()) {
+    <div class="p-co__header">
+      <p-co-header 
+        [title]="title()"
+      ></p-co-header>
+    </div>
+  }
+
+  <main role="main" class="p-co__container">
+    <router-outlet></router-outlet>
+  </main>
+
+  @if (showFooter()) {
+    <div class="p-co__footer">
+      <p-co-footer></p-co-footer>
+    </div>
+  }
+</div>
+
+<p-co-loader></p-co-loader>
+<p-co-toast></p-co-toast>
+<p-co-action-sheet></p-co-action-sheet>
+<p-co-modal></p-co-modal>

@@ -1,0 +1,48 @@
+<section class="activate-page">
+  <header class="activate-page__header">
+    <h1>Activate your account</h1>
+    <p>Set a password to finish activating your account.</p>
+  </header>
+
+  @if (activateForm) {
+    <form 
+      [formGroup]="activateForm" 
+      (ngSubmit)="onActivate()" 
+      class="activate-page__form"
+    >
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" [type]="passwordVisible ? 'text' : 'password'" required>
+
+        <mat-icon 
+          matSuffix 
+          (click)="passwordVisible = !passwordVisible"
+        >
+          {{ passwordVisible ? 'visibility_off' : 'visibility' }}
+        </mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Confirm password</mat-label>
+        <input matInput formControlName="confirmPassword" [type]="confirmVisible ? 'text' : 'password'" required>
+
+        <mat-icon 
+          matSuffix 
+          (click)="confirmVisible = !confirmVisible"
+        >
+          {{ confirmVisible ? 'visibility_off' : 'visibility' }}
+        </mat-icon>
+      </mat-form-field>
+
+      <button 
+        matButton="filled" 
+        color="primary" 
+        class="w-full" 
+        type="submit" 
+        [disabled]="activateForm.invalid"
+      >
+        Activate account
+      </button>
+    </form>
+  }
+</section>

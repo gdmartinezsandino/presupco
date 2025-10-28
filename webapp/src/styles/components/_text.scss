@@ -1,0 +1,41 @@
+@layer components {
+  h1 {
+    @apply text-2xl font-semibold text-black-500;
+  }
+
+  h2 {
+    @apply text-xl font-medium text-black-950;
+  }
+
+  h3 {
+    @apply text-md font-semibold text-black-950;
+  }
+
+  h4 {
+    @apply text-sm font-normal text-green-600;
+  }
+
+  p, 
+  a,
+  ul li,
+  ol li {
+    @apply text-sm font-normal text-black-950 font-normal;
+  }
+
+  a {
+    @apply text-green-600 font-medium cursor-pointer;
+  }
+
+  p {
+    span {
+      @apply text-green-400;
+    }
+  }
+
+  ul li,
+  ol li {
+    &:nth-child(n+2) {
+      @apply mt-[var(--spacing-1)] mb-0;
+    }
+  }
+}

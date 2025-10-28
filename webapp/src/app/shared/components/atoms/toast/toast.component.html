@@ -1,0 +1,15 @@
+@if (visible()) {
+  <div 
+    #toast 
+    class="toast"
+    [ngClass]="toastClasses()"
+    (click)="hide()"
+    (keydown.enter)="hide()"
+    (keydown.space)="hide()"
+    tabindex="0"
+    role="alert"
+    aria-live="polite"
+  >
+    <div [innerHTML]="message()"></div>
+  </div>
+}

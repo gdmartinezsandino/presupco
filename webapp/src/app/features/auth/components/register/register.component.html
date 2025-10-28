@@ -1,0 +1,76 @@
+<section class="register-page">
+  <header class="register-page__header">
+    <h1>Sign Up</h1>
+    <p>Hello, welcome to PresupCo</p>
+  </header>
+
+  <form 
+    [formGroup]="registerForm" 
+    (ngSubmit)="onRegister()" 
+    (keyup.enter)="onRegister()" 
+    class="register-page__form"
+    tabindex="0"
+    role="form"
+    aria-label="Registration form"
+  >
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Name</mat-label>
+      <input 
+        matInput 
+        formControlName="name" 
+        type="text" 
+        required
+        [attr.aria-label]="'Full name'"
+        [attr.aria-invalid]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched"
+      >
+      @if (registerForm.get('name')?.touched) {
+        @if (registerForm.get('name')?.errors?.['required']) {
+          <mat-error>Name is required</mat-error>
+        }
+        @if (registerForm.get('name')?.errors?.['minlength']) {
+          <mat-error>Name must be at least 2 characters</mat-error>
+        }
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Email</mat-label>
+      <input 
+        matInput 
+        formControlName="email" 
+        type="email" 
+        required
+        [attr.aria-label]="'Email address'"
+        [attr.aria-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+      >
+      @if (registerForm.get('email')?.touched) {
+        @if (registerForm.get('email')?.errors?.['required']) {
+          <mat-error>Email is required</mat-error>
+        }
+        @if (registerForm.get('email')?.errors?.['pattern']) {
+          <mat-error>Please enter a valid email address</mat-error>
+        }
+      }
+    </mat-form-field>
+
+    <button 
+      matButton="filled"
+      color="primary" 
+      class="w-full" 
+      [disabled]="!registerForm.valid"
+    >
+      Sign Up
+    </button>
+
+    <p class="register-page__have-account">
+      Have an account?
+      <a 
+        href="javascript:void(0)"
+        (click)="goTo('/login')"
+        (keydown.enter)="goTo('/login')"
+        tabindex="0"
+        role="link"
+      >Sign in</a>
+    </p>
+  </form>
+</section>

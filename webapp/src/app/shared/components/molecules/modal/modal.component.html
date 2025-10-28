@@ -1,0 +1,51 @@
+@if (visible()) {
+  <div
+    class="modal"
+    [ngClass]="modalClasses()"
+  >
+    <div class="modal__container">
+      @if (!hideCloseButton()) {
+        <button class="modal__close" (click)="hide()">
+          <!-- <img src="assets/icon/close.svg" alt="Close modal"> -->
+        </button>
+      }
+
+      @if (icon()) {
+        <div class="model__icon">
+          @switch (icon()) {
+            @case ('success') {
+              <!-- <img src="assets/icon/success.svg" alt="success"> -->
+            }
+          }
+        </div>
+      }
+
+      @if (sanitizedCustomSvg()) {
+        <div class="modal__icon" [innerHTML]="sanitizedCustomSvg()"></div>
+      }
+
+      <h2 class="modal__title">{{ title() }}</h2>
+      <p class="modal__description">{{ description() }}</p>
+
+      @if (button()) {
+        <div class="modal__actions">
+          @if (confirm()) {
+            <button class="button button--secondary" (click)="hide()">
+              Cancel
+            </button>
+          }
+
+          @if (secondaryButton()) {
+            <button class="button button--secondary" (click)="secondaryButton()!.action(); hide()">
+              {{ secondaryButton()!.label }}
+            </button>
+          }
+
+          <button class="button" (click)="button().action(); hide()">
+            {{ button().label }}
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+}
