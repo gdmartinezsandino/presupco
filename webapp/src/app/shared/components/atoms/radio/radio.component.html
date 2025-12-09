@@ -1,0 +1,11 @@
+<label class="label cursor-pointer gap-3">
+  <input
+    type="radio"
+    class="radio"
+    [disabled]="disabled()"
+    [checked]="value()"
+    (change)="onChange($event)"
+    (blur)="onTouched()"
+  />
+  <span class="label-text">{{ label() }}</span>
+</label>

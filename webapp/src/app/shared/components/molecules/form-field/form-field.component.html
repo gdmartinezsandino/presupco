@@ -1,0 +1,23 @@
+<div class="form-field w-full">
+  <label class="form-field__label">
+    <span class="label-text font-medium">{{ label() }}</span>
+  </label>
+
+  <ng-content></ng-content>
+
+  @if (!hasError && hintTpl) {
+    <label class="label">
+      <span class="label-text-alt text-gray-400">
+        <ng-container *ngTemplateOutlet="hintTpl"></ng-container>
+      </span>
+    </label>
+  }
+
+  @if (hasError && errorsTpl) {
+    <label class="label">
+      <span class="label-text-alt text-red-500">
+        <ng-container *ngTemplateOutlet="errorsTpl; context: { $implicit: control()?.errors }"></ng-container>
+      </span>
+    </label>
+  }
+</div>

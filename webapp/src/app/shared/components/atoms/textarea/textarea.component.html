@@ -1,0 +1,8 @@
+<textarea
+  class="textarea textarea-bordered w-full"
+  [rows]="rows"
+  [placeholder]="placeholder"
+  [disabled]="disabled"
+  (input)="onChange($event)"
+  (blur)="onTouched()"
+>{{ value }}</textarea>

@@ -1,5 +1,5 @@
 import { Component, inject, input, OnDestroy, OnInit, signal  } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -10,7 +10,7 @@ import * as fromServicesAuth from '@auth/services';
   selector: 'p-co-header',
   styleUrls: ['./header.component.scss'],
   templateUrl: './header.component.html',
-  imports: [CommonModule],
+  imports: [],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   private _router = inject(Router);

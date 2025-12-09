@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   selector: 'p-co-footer',
   styleUrls: ['./footer.component.scss'],
   templateUrl: './footer.component.html',
-  imports: [CommonModule],
+  imports: [],
 })
 export class FooterComponent {
   private _router = inject(Router);

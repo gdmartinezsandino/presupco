@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, signal } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -17,14 +17,13 @@ import * as fromConstantsShared from '@shared/constants';
   styleUrls: ['./forgot-password.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule,
-  ]
+    MatIconModule
+]
 })
 export class ForgotPasswordComponent {
   private _formBuilder = inject(FormBuilder);

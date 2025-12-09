@@ -13,52 +13,15 @@
     role="form"
     aria-label="Login form"
   >
-    <mat-form-field class="w-full">
-      <mat-label>Email</mat-label>
-      <input 
-        matInput 
-        formControlName="email" 
-        type="email" 
-        required
-        [attr.aria-label]="'Email'"
-        [attr.aria-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
-      >
-      @if (loginForm.get('email')?.touched) {
-        @if (loginForm.get('email')?.errors?.['required']) {
-          <mat-error>Email is required</mat-error>
-        }
-        @if (loginForm.get('email')?.errors?.['pattern']) {
-          <mat-error>Please enter a valid email address</mat-error>
-        }
-      }
-    </mat-form-field>
+    <button class="btn btn-primary">DaisyUI?</button>
 
-    <mat-form-field appearance="fill" class="w-full">
-      <mat-label>Password</mat-label>
-      <input 
-        matInput 
-        formControlName="password" 
-        [type]="passwordVisible() ? 'text' : 'password'"
-        required
-        [attr.aria-label]="'Password'"
-        [attr.aria-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-      >
-      @if (loginForm.get('password')?.touched) {
-        @if (loginForm.get('password')?.errors?.['required']) {
-          <mat-error>Password is required</mat-error>
-        }
-      }
-      <button
-        mat-icon-button 
-        matSuffix 
-        type="button"
-        (click)="passwordVisible.set(!passwordVisible())"
-        (keydown.enter)="passwordVisible.set(!passwordVisible())"
-        [attr.aria-label]="passwordVisible() ? 'Hide password' : 'Show password'"
-      >
-        <mat-icon>{{ passwordVisible() ? 'visibility_off' : 'visibility' }}</mat-icon>
-      </button>
-    </mat-form-field>
+    <ui-form-field label="Email">
+      <ui-input formControlName="email" />
+    </ui-form-field>
+
+    <ui-form-field label="Password">
+      <ui-input formControlName="password" />
+    </ui-form-field>
 
     <p class="login-page__forgot-password">
       <a 

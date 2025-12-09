@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 import { BudgetsService } from '@budgets/services';
 
@@ -7,9 +7,7 @@ import { BudgetsService } from '@budgets/services';
   selector: 'p-co-budgets',
   templateUrl: './budgets.component.html',
   styleUrls: ['./budgets.component.scss'],
-  imports: [
-    CommonModule,
-  ],
+  imports: [],
   providers: [
     BudgetsService
   ],

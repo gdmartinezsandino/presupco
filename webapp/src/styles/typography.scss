@@ -12,7 +12,7 @@
   }
 
   h4 {
-    @apply text-sm font-normal text-green-600;
+    @apply text-sm font-normal text-primary-500;
   }
 
   p, 
@@ -23,12 +23,12 @@
   }
 
   a {
-    @apply text-green-600 font-medium cursor-pointer;
+    @apply text-primary-500 font-medium cursor-pointer;
   }
 
   p {
     span {
-      @apply text-green-400;
+      @apply text-primary-500;
     }
   }
 

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,14 +17,13 @@ import * as fromInterfaces from '@auth/interfaces';
   styleUrls: ['./change-password.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule,
-  ],
+    MatIconModule
+],
 })
 export class ChangePasswordComponent implements OnInit {
   private _formBuilder = inject(FormBuilder);

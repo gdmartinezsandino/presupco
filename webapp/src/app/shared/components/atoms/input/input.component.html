@@ -1,0 +1,9 @@
+<input
+  class="input input-primary w-full"
+  [type]="type()"
+  [placeholder]="placeholder()"
+  [disabled]="disabled() || isDisabled()"
+  [value]="value()"
+  (input)="onChange($event.target.value)"
+  (blur)="onTouched()"
+/>

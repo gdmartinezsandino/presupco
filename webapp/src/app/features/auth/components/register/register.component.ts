@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -18,14 +18,13 @@ import * as fromConstantsShared from '@shared/constants';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
   imports: [
-    CommonModule, 
-    FormsModule, 
+    FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule,
-  ],
+    MatIconModule
+],
   providers: [
     fromServicesUser.UserService, 
   ],

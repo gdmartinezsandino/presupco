@@ -1,0 +1,11 @@
+<label class="label cursor-pointer justify-start gap-3">
+  <input
+    type="checkbox"
+    class="checkbox"
+    [checked]="value()"
+    [disabled]="disabled()"
+    (change)="onChange($event.target.checked)"
+    (blur)="onTouched()"
+  />
+  <span class="label-text">{{ label() }}</span>
+</label>

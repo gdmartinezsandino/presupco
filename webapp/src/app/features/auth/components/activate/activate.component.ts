@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormsModule, ReactiveFormsModule, FormGroup, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,14 +16,13 @@ import * as fromServicesShared from '@shared/services';
   styleUrls: ['./activate.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule,
-  ]
+    MatIconModule
+]
 })
 export class ActivateComponent implements OnInit {
   private _route = inject(ActivatedRoute);

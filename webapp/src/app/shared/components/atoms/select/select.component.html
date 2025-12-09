@@ -1,0 +1,12 @@
+<select
+  class="select select-bordered w-full"
+  [disabled]="disabled()"
+  [value]="value() ?? ''"
+  (change)="handleChange($event)"
+  (blur)="onTouched()"
+>
+  <option value="">{{ placeholder() }}</option>
+  @for (opt of options(); track opt) {
+    <option [value]="opt.value">{{ opt.label }}</option>
+  }
+</select>

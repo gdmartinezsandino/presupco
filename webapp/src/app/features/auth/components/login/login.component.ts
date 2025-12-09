@@ -1,30 +1,24 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
 
 import * as fromDto from '@auth/dto';
 import * as fromServicesAuth from '@auth/services';
 import * as fromServicesShared from '@shared/services';
 import * as fromConstantsShared from '@shared/constants';
+import * as fromComponentsShared from '@shared/components';
 
 @Component({
   selector: 'p-co-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   imports: [
-    CommonModule, 
-    FormsModule, 
+    FormsModule,
     ReactiveFormsModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
+    fromComponentsShared.UiFormFieldComponent,
+    fromComponentsShared.UiInputComponent,
   ],
+  encapsulation: ViewEncapsulation.None,
 })
 export class LoginComponent {
   private _router = inject(Router);

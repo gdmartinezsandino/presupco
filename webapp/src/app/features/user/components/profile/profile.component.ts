@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Router } from '@angular/router';
 
 import * as fromInterfaces from '@user/interfaces';
@@ -9,9 +9,7 @@ import * as fromAuthServices from '@auth/services';
   selector: 'p-co-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
-  imports: [
-    CommonModule,
-  ],
+  imports: [],
 })
 export class ProfileComponent {
   private _router = inject(Router);
