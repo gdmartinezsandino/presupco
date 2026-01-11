@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, input, signal } from '@angular/core';
-import { MatProgressSpinnerModule, ProgressSpinnerMode } from '@angular/material/progress-spinner';
 
 import * as fromEnums from '@shared/enums';
 
@@ -10,14 +9,12 @@ import * as fromEnums from '@shared/enums';
   styleUrls: ['./loader.component.scss'],
   imports: [
     CommonModule,
-    MatProgressSpinnerModule
   ],
 })
 export class LoaderComponent {
   public visible = signal<boolean>(false);
   public message = input<string>('');
   public darkBackdrop = input<boolean>(false);
-  public spinnerMode = input<ProgressSpinnerMode>(fromEnums.App.LOADER.MODES.INDETERMINATE);
   public spinnerSize = input<number>(fromEnums.App.LOADER.SIZES.MEDIUM);
 
   public loaderClasses = computed(() => ({

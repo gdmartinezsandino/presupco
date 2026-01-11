@@ -1,36 +1,6 @@
 version: "3.9"
 
 services:
-  server:
-    container_name: ${APP_NAME}-server
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-      target: ${NODE_ENV}
-      args:
-        NODE_VERSION: ${NODE_VERSION}
-        NODE_ENV: ${NODE_ENV}
-    environment:
-      - NODE_VERSION=${NODE_VERSION}
-      - NODE_ENV=${NODE_ENV}
-      - APP_NAME=${APP_NAME}
-      - APP_URL=${APP_URL}
-      - DB_HOST=database
-      - DB_PORT=${DB_PORT}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${DB_NAME}
-      - REDIS_HOST=redis
-      - REDIS_PORT=${REDIS_PORT}
-    ports:
-      - "${SERVER_PORT}:3000"
-    volumes:
-      - ./server:/app
-      - /app/node_modules
-    depends_on:
-      - db
-      - redis
-
   database:
     image: postgres:15
     container_name: ${APP_NAME}-database
@@ -42,9 +12,22 @@ services:
       - "${DB_PORT}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:7
     container_name: ${APP_NAME}-redis
     ports:
       - "${REDIS_PORT}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  postgres_data:

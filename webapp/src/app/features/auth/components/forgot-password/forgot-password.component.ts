@@ -2,10 +2,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 
 import * as fromServices from '@auth/services';
 import * as fromServicesShared from '@shared/services';
@@ -19,10 +15,6 @@ import * as fromConstantsShared from '@shared/constants';
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule
 ]
 })
 export class ForgotPasswordComponent {

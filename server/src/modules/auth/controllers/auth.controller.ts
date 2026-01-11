@@ -3,13 +3,14 @@ import {
   Req,
   Post,
   Body,
-  Patch,
+  Get,
   ConflictException,
   InternalServerErrorException,
   BadRequestException,
   UnauthorizedException,
   HttpCode,
   HttpStatus,
+  Param,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -28,6 +29,7 @@ import {
 import { Public } from '@common/decorators';
 import * as fromDtoAuth from '@auth/dto';
 import * as fromServicesAuth from '@auth/services';
+import * as fromInterfacesUsers from '@users/interfaces';
 import * as fromDtoUsers from '@users/dto';
 import * as fromServicesUsers from '@users/services';
 import * as fromEnumsUsers from '@users/enums';
@@ -54,6 +56,28 @@ export class AuthController {
     private _serviceRedis: fromServicesShared.RedisService,
     private readonly _logger: fromServicesShared.LoggerService,
   ) {}
+
+  private async sendActivateEmail(user: Partial<fromInterfacesUsers.User>) {
+    const token = await this._serviceJwt.signAsync({
+      id: user.id,
+      email: user.email,
+    });
+    await this._serviceRedis.set(
+      `activate:${token}`,
+      user.id ?? '',
+      60 * 60 * 24,
+    );
+
+    await this._serviceMailing.send({
+      to: user.email ?? '',
+      subject: 'Activate your account',
+      template: 'activate-account',
+      context: {
+        email: user.email,
+        activateLink: `${this._serviceConfig.get<string>('WEBAPP_URL')}/activate?token=${token}`,
+      },
+    });
+  }
 
   @Public()
   @Post('register')
@@ -95,27 +119,7 @@ export class AuthController {
     }
 
     try {
-      // create activation token, persist mapping in redis and send activation email
-      const token = await this._serviceJwt.signAsync({
-        id: createdUser.id,
-        email: createdUser.email,
-      });
-      await this._serviceRedis.set(
-        `activate:${token}`,
-        createdUser.id,
-        60 * 60 * 24,
-      );
-
-      await this._serviceMailing.send({
-        to: createdUser.email,
-        subject: 'Activate your account',
-        template: 'activate-account',
-        context: {
-          email: createdUser.email,
-          activateLink: `${this._serviceConfig.get<string>('WEBAPP_URL')}/activate?token=${token}`,
-        },
-      });
-
+      await this.sendActivateEmail(createdUser);
       return createdUser;
     } catch (error) {
       this._logger.logError(error, req);
@@ -124,7 +128,7 @@ export class AuthController {
   }
 
   @Public()
-  @Patch('activate')
+  @Post('activate')
   @ApiOperation({
     summary: 'Activate user account',
     description:
@@ -147,15 +151,11 @@ export class AuthController {
           type: 'string',
           description: 'Activation token received via email',
         },
-        password: {
-          type: 'string',
-          description: 'Optional new password',
-        },
       },
     },
   })
   async activate(@Body() body: { token: string; password?: string }) {
-    const { token, password } = body;
+    const { token } = body;
     if (!token) throw new BadRequestException('Token not provided');
 
     const exists = await this._serviceRedis.exists(`activate:${token}`);
@@ -178,13 +178,7 @@ export class AuthController {
       throw new BadRequestException('User already activated');
     }
 
-    if (password) {
-      const hash = await bcrypt.hash(password, 10);
-      user.password = hash;
-    }
-
     user.state = fromEnumsUsers.USER_STATES.ACTIVE;
-
     const updated = await this._serviceUsers.findAndUpdate(
       { id: user.id },
       user,
@@ -207,7 +201,14 @@ export class AuthController {
       },
     });
 
-    return updated;
+    const sanitizedUser = this._serviceUsers.sanitizeUser(updated);
+    const accessToken = await this._serviceJwt.signAsync(sanitizedUser);
+    return {
+      valid: true,
+      activated: true,
+      user: sanitizedUser,
+      token: accessToken,
+    };
   }
 
   @Public()
@@ -217,23 +218,17 @@ export class AuthController {
   }
 
   @Public()
-  @Post('activation-status')
-  async activationStatus(@Body() body: { token: string }) {
-    const { token } = body;
-    if (!token) return { valid: false, activated: false };
-
-    const exists = await this._serviceRedis.exists(`activate:${token}`);
-    if (!exists) return { valid: false, activated: false };
-
-    const userId = await this._serviceRedis.get(`activate:${token}`);
-    const user = await this._serviceUsers.findById(userId as string);
-    if (!user) return { valid: false, activated: false };
+  @Get('status')
+  async activationStatus(@Param('email') email: string) {
+    const user = await this._serviceUsers.findOneByPayload({ email: email });
+    if (!user) {
+      return {
+        message: 'User not found',
+      }
+    }
 
     return {
-      valid: true,
-      activated:
-        (user.state as fromEnumsUsers.USER_STATES) ===
-        fromEnumsUsers.USER_STATES.ACTIVE,
+      status: user.state,
     };
   }
 
@@ -261,25 +256,28 @@ export class AuthController {
       throw new BadRequestException(`User with email ${email} not found`);
     }
 
-    if (
-      (user.state as fromEnumsUsers.USER_STATES) !==
-      fromEnumsUsers.USER_STATES.ACTIVE
-    ) {
-      throw new BadRequestException('User has not been activated');
-    }
-
     if (await bcrypt.compare(password, user?.password)) {
-      user.lastLogin = now();
+      user.lastLogin = new Date(now());
+
+      if (
+        (user.state as fromEnumsUsers.USER_STATES) !==
+        fromEnumsUsers.USER_STATES.ACTIVE
+      ) {
+        await this.sendActivateEmail(user);
+        throw new BadRequestException('User has not been activated');
+      }
 
       const userUpdated = await this._serviceUsers.findAndUpdate(
         { email: user.email },
         user,
       );
+
       if (!userUpdated) {
         throw new BadRequestException(
           `User with email ${email} was not logged correctly`,
         );
-      } else {
+      } 
+      else {
         const sanitizedUser = this._serviceUsers.sanitizeUser(userUpdated);
         const token = await this._serviceJwt.signAsync(sanitizedUser);
         return {
@@ -287,7 +285,8 @@ export class AuthController {
           token: token,
         };
       }
-    } else {
+    } 
+    else {
       throw new InternalServerErrorException('Invalid credentials');
     }
   }
@@ -374,14 +373,15 @@ export class AuthController {
         template: 'reset-password',
         context: {
           name: user.name,
-          resetLink: `${this._serviceConfig.get<string>('WEBAPP_URL')}/reset-password?token=${token}`,
+          link: `${this._serviceConfig.get<string>('WEBAPP_URL')}/reset-password?token=${token}`,
         },
       });
 
       return {
         message: 'Password reset instructions sent to your email',
       };
-    } catch (error) {
+    }
+    catch (error) {
       this._logger.logError(error, req);
       throw new InternalServerErrorException(
         'Error sending password reset email',

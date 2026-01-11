@@ -6,9 +6,9 @@
     "api:docs:update": "chmod +x ./scripts/postman/update-collection.sh && ./scripts/postman/update-collection.sh"
   },
   "devDependencies": {
+    "axios": "^1.6.0",
     "husky": "^8.0.0",
     "lint-staged": "^14.0.0",
-    "axios": "^1.6.0",
     "openapi-to-postmanv2": "^3.0.0"
   },
   "lint-staged": {

@@ -54,10 +54,63 @@ module.exports = {
         xl: 'var(--text-xl)',
         '2xl': 'var(--text-xxl)',
       },
+      keyframes: {
+        fadeIn: {
+          '0%': {
+            opacity: '0',
+          },
+          '100%': {
+            opacity: '1',
+          },
+        },
+        fadeOut: {
+          '0%': {
+            opacity: '1',
+          },
+          '100%': {
+            opacity: '0',
+          },
+        },
+        slideInUp: {
+          '0%': {
+            transform: 'translateY(20px)',
+          },
+          '100%': {
+            transform: 'translateY(0)',
+          },
+        },
+        slideOutDown: {
+          '0%': {
+            transform: 'translateY(0)',
+          },
+          '100%': {
+            transform: 'translateY(20px)',
+          },
+        },
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.3s ease-out',
+        'fade-out': 'fadeOut 0.3s ease-in forwards',
+        'slide-in-up': 'slideInUp 0.3s ease-out',
+        'slide-out-down': 'slideOutDown 0.3s ease-in forwards',
+      },
+      gridTemplateColumns: {
+        'auto-max': 'auto max-content',
+        'max-auto': 'max-content auto',
+        'max-max-auto': 'max-content max-content auto',
+        'max-auto-max': 'max-content auto max-content',
+      },
+      gridTemplateRows: {
+        'max-auto': 'max-content auto',
+        'auto-max': 'auto max-content',
+        'max-auto-auto': 'max-content auto auto',
+        'max-auto-max': 'max-content auto max-content',
+        'max-max-auto': 'max-content max-content auto',
+      },
     },
   },
   plugins: [require('daisyui')],
   daisyui: {
-    themes: ['light', 'dark', 'corporate', 'emerald', 'dracula'],
+    themes: ['light', 'dark'],
   },
 };

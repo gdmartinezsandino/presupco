@@ -13,7 +13,7 @@ export interface BodyEmail {
 
 @Injectable()
 export class MailingService {
-  private transporter;
+  private transporter: nodemailer.Transporter;
 
   constructor() {
     this.transporter = nodemailer.createTransport({
@@ -61,11 +61,13 @@ export class MailingService {
         appUrl: process.env.APP_URL,
         appSlogan: process.env.APP_SLOGAN,
       },
-      attachments: [{
-        filename: 'logo.png',
-        path: join(process.cwd(), 'src/assets/logo.png'),
-        cid: 'appLogo'
-      }]
+      attachments: [
+        {
+          filename: 'logo.png',
+          path: join(process.cwd(), 'src/assets/logo.png'),
+          cid: 'appLogo',
+        },
+      ],
     };
 
     try {

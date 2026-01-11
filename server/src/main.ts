@@ -71,7 +71,8 @@ async function bootstrap() {
 
     const url = await app.getUrl();
     console.log(`Application is running on: ${url}`);
-  } catch (err: unknown) {
+  } 
+  catch (err: unknown) {
     // log safely and exit
     if (err instanceof Error) {
       console.error('Bootstrap failed:', err.stack || err.message);

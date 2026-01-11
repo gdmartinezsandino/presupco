@@ -1,82 +1,120 @@
 #!/bin/bash
 set -e
 
-# --- Redis ---
-if [ "$(docker ps -q -f name=presupco-redis)" ]; then
-  echo "✅ Redis container is already running."
-elif [ "$(docker ps -aq -f status=exited -f name=presupco-redis)" ]; then
-  echo "🔁 Restarting existing Redis container..."
-  docker start presupco-redis
-else
-  echo "🧱 Starting new Redis container..."
-  docker run -d \
-    --name presupco-redis \
-    -p 6379:6379 \
-    redis:7 \
-    redis-server --save 20 1 --loglevel warning
-fi
+############################################
+# Helpers
+############################################
+log() {
+  echo -e "\n🔹 $1"
+}
 
+fail() {
+  echo -e "\n❌ $1"
+  exit 1
+}
 
-# --- Backend (NestJS) ---
-echo ""
-echo "⚙️  Setting up Backend..."
+wait_for_healthy() {
+  local container=$1
+  local timeout=${2:-30}
+
+  echo "⏳ Waiting for $container to become healthy..."
+
+  for ((i=1; i<=timeout; i++)); do
+    status=$(docker inspect --format='{{.State.Health.Status}}' "$container" 2>/dev/null || echo "not-found")
+
+    if [ "$status" = "healthy" ]; then
+      echo "✅ $container is healthy"
+      return 0
+    fi
+
+    if [ "$status" = "unhealthy" ]; then
+      echo "❌ $container is unhealthy"
+      docker logs "$container"
+      exit 1
+    fi
+
+    sleep 1
+  done
+
+  echo "❌ Timeout waiting for $container to become healthy"
+  docker logs "$container"
+  exit 1
+}
+
+############################################
+# Environment
+############################################
+export APP_NAME=presupco
+
+export DB_HOST=localhost
+export DB_PORT=5432
+export DB_USERNAME=presupco_user
+export DB_PASSWORD=presupco_pass
+export DB_NAME=presupco_db
+
+export REDIS_PORT=6379
+
+############################################
+# Docker Infra
+############################################
+log "Starting infrastructure (Postgres, Redis, MailHog)..."
+
+docker-compose up -d || fail "Docker Compose failed"
+
+wait_for_healthy "${APP_NAME}-database" 30
+wait_for_healthy "${APP_NAME}-redis" 20
+wait_for_healthy "${APP_NAME}-mailhog" 10
+
+log "Infrastructure is healthy ✅"
+
+############################################
+# Backend
+############################################
+log "Preparing backend..."
+
 (
   cd server
+
+  export NVM_DIR="$HOME/.nvm"
   [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
-  if [ -f ".nvmrc" ]; then
-    NODE_VERSION=$(cat .nvmrc)
-    echo "🔹 Using Node version $NODE_VERSION from server/.nvmrc"
-    nvm use --delete-prefix "$NODE_VERSION" --silent || nvm install "$NODE_VERSION"
-  else
-    echo "⚠️  No .nvmrc found in server/"
-  fi
+  nvm use || nvm install
 
   if [ ! -d "node_modules" ]; then
-    echo "📦 Installing server dependencies..."
+    log "Installing backend dependencies..."
     yarn install
-  else
-    echo "✅ Server dependencies already installed."
   fi
 
-  echo "⚡ Starting NestJS (backend)..."
-  yarn start:dev
+  log "Backend ready (start manually with yarn start:dev)"
 ) &
 
+############################################
+# Frontend
+############################################
+log "Preparing frontend..."
 
-# --- Frontend (Angular) ---
-# echo ""
-# echo "🧩 Setting up Frontend..."
-# (
-#   cd webapp
-#   export NVM_DIR="$HOME/.nvm"
-#   [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+(
+  cd webapp
 
-#   if [ -f ".nvmrc" ]; then
-#     echo "🔹 Using Node version from webapp/.nvmrc"
-#     nvm use || nvm install
-#   else
-#     echo "⚠️  No .nvmrc found in webapp/"
-#   fi
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
-#   if [ ! -d "node_modules" ]; then
-#     echo "📦 Installing webapp dependencies..."
-#     yarn install
-#   else
-#     echo "✅ Webapp dependencies already installed."
-#   fi
+  nvm use || nvm install
 
-#   echo "⚡ Starting Angular (frontend)..."
-#   yarn start
-# ) &
+  if [ ! -d "node_modules" ]; then
+    log "Installing frontend dependencies..."
+    yarn install
+  fi
 
+  log "Frontend ready (start manually with yarn start)"
+) &
 
-# --- Wait for both background jobs ---
 wait
 
-# --- Final message ---
+############################################
+# Final
+############################################
 echo ""
-echo "✅ All services started successfully!"
-echo "Backend:  http://localhost:3000"
-echo "Frontend: http://localhost:4200"
-echo "Redis:    docker container 'presupco-redis'"
+echo "✅ Development environment ready"
+echo "Backend:   http://localhost:3000"
+echo "Frontend:  http://localhost:4200"

@@ -182,7 +182,7 @@ export class UsersController {
     const payload: Partial<User> = {
       ...updateUserDto,
       birthday: updateUserDto.birthday
-        ? new Date(updateUserDto.birthday).getTime()
+        ? new Date(updateUserDto.birthday)
         : undefined,
     };
 
@@ -246,89 +246,6 @@ export class UsersController {
       this._logger.logError(error as unknown, req);
       throw new InternalServerErrorException(
         `User with id ${id} was not deleted`,
-      );
-    }
-  }
-
-  @Public()
-  @Post('forgot-password')
-  async forgotPassword(
-    @Body() forgotPasswordDto: ForgotPasswordDto,
-    @Req() req: AuthRequest,
-  ) {
-    const { email } = forgotPasswordDto;
-
-    const user = await this._service.findOneByPayload({ email });
-    if (!user) {
-      throw new BadRequestException('User does not exist');
-    }
-
-    try {
-      const token = await this._serviceJwt.signAsync(
-        this._service.sanitizeUser(user) as Record<string, unknown>,
-      );
-      await this._serviceRedis.set(
-        `reset:${token}`,
-        String(user.email),
-        60 * 15,
-      );
-      await this._mailingService.send({
-        to: user.email,
-        subject: 'Reset your password',
-        template: 'forgot-password',
-        context: {
-          name: user.name,
-          link: `${this._serviceConfig.get<string>('WEBAPP_URL')}/reset-password?token=${token}`,
-        },
-      });
-
-      return { token, success: true };
-    } catch (error) {
-      this._logger.logError(error as unknown, req);
-      throw new InternalServerErrorException('Error trying to send an email');
-    }
-  }
-
-  @Public()
-  @Post('reset-password/:token')
-  async resetPassword(
-    @Param('token') token: string,
-    @Body() resetPasswordDto: ResetPasswordDto,
-    @Req() req: AuthRequest,
-  ) {
-    const decoded: unknown = this._serviceJwt.decode(token);
-    const decodedObj = decoded as Record<string, unknown> | null;
-    const idVal = decodedObj && decodedObj['id'];
-    if (
-      !decodedObj ||
-      idVal === undefined ||
-      idVal === null ||
-      (typeof idVal !== 'string' && typeof idVal !== 'number')
-    ) {
-      throw new BadRequestException('Invalid token');
-    }
-    const userId = String(idVal);
-
-    try {
-      const hash = await bcrypt.hash(resetPasswordDto.password, 10);
-      const updatedPayload: Partial<User> = { password: hash };
-
-      const userUpdated = await this._service.findAndUpdate(
-        { id: userId },
-        updatedPayload,
-      );
-      if (!userUpdated) {
-        throw new BadRequestException(
-          `Password of the user with ID: ${userId} has not changed`,
-        );
-      }
-
-      await this._serviceRedis.del(`reset:${token}`);
-      return { user: userUpdated };
-    } catch (error) {
-      this._logger.logError(error as unknown, req);
-      throw new InternalServerErrorException(
-        `Error trying to reset password of the user with ID: ${userId}`,
       );
     }
   }

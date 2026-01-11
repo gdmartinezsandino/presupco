@@ -2,10 +2,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormsModule, ReactiveFormsModule, FormGroup, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
 
 import * as fromServicesAuth from '@auth/services';
 import * as fromServicesShared from '@shared/services';
@@ -18,10 +14,6 @@ import * as fromServicesShared from '@shared/services';
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule
 ]
 })
 export class ActivateComponent implements OnInit {

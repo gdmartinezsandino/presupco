@@ -24,13 +24,13 @@ export class User {
   password: string;
 
   @Column({ type: 'bigint', nullable: true })
-  birthday: number;
+  birthday: Date;
 
   @Column('text', { array: true, default: [] })
   roles: string[];
 
   @Column({ type: 'bigint', nullable: true })
-  lastLogin: number;
+  lastLogin: Date;
 
   @Column({ nullable: true })
   avatar: string;

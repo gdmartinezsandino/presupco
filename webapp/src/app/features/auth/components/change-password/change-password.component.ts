@@ -2,10 +2,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
 
 import * as fromServices from '@auth/services';
 import * as fromServicesShared from '@shared/services';
@@ -19,10 +15,6 @@ import * as fromInterfaces from '@auth/interfaces';
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule
 ],
 })
 export class ChangePasswordComponent implements OnInit {

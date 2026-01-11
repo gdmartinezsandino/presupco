@@ -3,11 +3,11 @@ export interface User {
   name: string;
   email: string;
   password: string;
-  birthday: number;
+  birthday: Date;
   roles: string[];
-  lastLogin: number;
+  lastLogin: Date;
   avatar: string;
   state: string;
-  createdAt: number;
-  updatedAt: number;
+  createdAt: Date;
+  updatedAt: Date;
 }

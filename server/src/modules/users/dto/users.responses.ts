@@ -32,7 +32,7 @@ export class UserResponse implements Partial<User> {
     example: '1990-01-01',
     required: false,
   })
-  birthday?: number;
+  birthday?: Date;
 
   @ApiProperty({
     description: 'User account status',

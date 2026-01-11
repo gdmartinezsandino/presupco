@@ -2,10 +2,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
 
 import * as fromDto from '@auth/dto';
 import * as fromServicesAuth from '@auth/services';
@@ -20,10 +16,6 @@ import * as fromConstantsShared from '@shared/constants';
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule
 ],
   providers: [
     fromServicesUser.UserService, 
