@@ -1,4 +1,3 @@
-TEST
 ### PresupCo Application
 
 [![Forks][forks-shield]][forks-url]
